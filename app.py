@@ -13,8 +13,8 @@ db = SQLAlchemy(app)
 
 
 class Task(db.Model):
-    __tablename__ = 'Tasks'
-    id = db.Column(db.Integer, primay_key=True)
+    __tablename__ = "persons"
+    id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
 
     def __repr__(self):
