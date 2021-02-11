@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 
 class Task(db.Model):
-    __tablename__ = "persons"
+    __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
 
