@@ -31,7 +31,9 @@ def index():
 @app.route("/add", methods=["POST"])
 def add():
     data = request.form["description"]
-    print(data)
+    newTodo = Task(description=data)
+    db.session.add(newTodo)
+    db.session.commit()
     return jsonify(status=True, description=data)
 
 

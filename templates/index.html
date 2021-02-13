@@ -15,11 +15,17 @@
       <li>
         <h2>To Do</h2>
       </li>
+      <li class="add">
+        <form action="/add" method="post">
+          <input type="text" name="description" class="description-input">
+          <input type="submit" value="+" class="submit">
+        </form>
+      </li>
       {% for d in data %}
       <li>
         <div class="task">
           <div class="description">{{ d.description }}</div>
-          <div class="remove">
+          <div class="remove" data-id="{{d.id}}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
               <!-- Font Awesome Free 5.15.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
               <path
@@ -29,12 +35,6 @@
         </div>
       </li>
       {% endfor %}
-      <li class="add">
-        <form action="/add" method="post">
-          <input type="text" name="description" class="description-input">
-          <input type="submit" value="+" class="submit">
-        </form>
-      </li>
     </ul>
   </div>
   <script src="/public/app.js"></script>
