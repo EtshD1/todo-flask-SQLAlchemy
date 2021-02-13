@@ -1,0 +1,91 @@
+*, *::after, *::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg,#8DA9C4, #EEF4ED);
+}
+
+.description {
+  flex: 1 0 80%;
+}
+
+.remove {
+  background-color: #ED474A;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  max-height: 100%;
+  width: 75px;
+  cursor: pointer;
+}
+
+.remove svg {
+  fill: #ffffffcc;
+  max-height: 100%;
+}
+
+.task {
+  padding: 0 10px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0;
+}
+
+.taskList li:not(:last-child) .task {
+  border-bottom: 1px solid #B0A1BA;
+}
+
+.taskList {
+  flex: 0 0 500px;
+  border: 2px solid rgb(18, 36, 37);
+  list-style: none;
+  border-radius: 15px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.taskList > li > h2 {
+  text-align: center;
+  padding: 5px 0;
+  background-color: #B0A1BA;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+
+.add > form {
+  display: flex;
+}
+
+.description-input, .submit {
+  border-radius: 0;
+  border: none;
+  padding: 5px 15px;
+}
+
+.description-input {
+  flex: 1 0 80%;
+  background-color: #F3DE8A;
+  font-size: 16px;
+}
+
+.submit {
+  width: 75px;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  background-color: #50CB3E;
+}
