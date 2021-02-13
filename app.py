@@ -1,3 +1,4 @@
+import sys
 from flask import Flask, request
 from flask.json import jsonify
 from flask.templating import render_template
@@ -30,11 +31,34 @@ def index():
 
 @app.route("/add", methods=["POST"])
 def add():
-    data = request.form["description"]
-    newTodo = Task(description=data)
-    db.session.add(newTodo)
-    db.session.commit()
-    return jsonify(status=True, description=data)
+    try:
+        data = request.form["description"]
+        newTodo = Task(description=data)
+        db.session.add(newTodo)
+        db.session.commit()
+        return jsonify(status=True, description=data, id=newTodo.id)
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        return jsonify(status=False)
+    finally:
+        db.session.close()
+
+
+@app.route("/delete", methods=["DELETE"])
+def remove():
+    try:
+        data = request.form["id"]
+        print(data)
+        Task.query.filter_by(id=data).delete()
+        db.session.commit()
+        return jsonify(status=True)
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        return jsonify(status=False)
+    finally:
+        db.session.close()
 
 
 if __name__ == '__main__':
