@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request
+from flask.json import jsonify
 from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 
@@ -25,6 +26,13 @@ db.create_all()
 @app.route("/")
 def index():
     return render_template("index.html", data=Task.query.all())
+
+
+@app.route("/add", methods=["POST"])
+def add():
+    data = request.form["description"]
+    print(data)
+    return jsonify(status=True, description=data)
 
 
 if __name__ == '__main__':
