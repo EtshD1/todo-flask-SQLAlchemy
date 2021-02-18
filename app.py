@@ -13,20 +13,26 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-migrate = Migrate(app, db,'migrations')
+migrate = Migrate(app, db, 'migrations')
+
 
 class Task(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
     completed = db.Column(db.Boolean, nullable=False, default=False)
+
     def __repr__(self):
         return f'ID:{self.id}, Description: {self.description}'
 
+
+# Read Task
 @app.route("/")
 def index():
     return render_template("index.html", data=Task.query.all())
 
+
+# Create Task
 @app.route("/add", methods=["POST"])
 def add():
     try:
@@ -42,12 +48,13 @@ def add():
     finally:
         db.session.close()
 
+
+# Delete
 @app.route("/delete", methods=["DELETE"])
 def remove():
     try:
         data = request.form["id"]
-        print(data)
-        Task.query.filter_by(id=data).delete()
+        db.session.delete(Task.query.get(data))
         db.session.commit()
         return jsonify(status=True)
     except:
@@ -56,6 +63,33 @@ def remove():
         return jsonify(status=False)
     finally:
         db.session.close()
+
+
+# Delete
+@app.route("/update", methods=["PUT"])
+def update():
+    try:
+        id = request.form["id"]
+        data = parse_bool(request.form["data"])
+        Task.query.get(id).completed = data
+        db.session.commit()
+        return jsonify(status=True)
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        return jsonify(status=False)
+    finally:
+        db.session.close()
+
+
+def parse_bool(str):
+    if str.lower() == 'false':
+        return False
+    elif str.lower() == 'true':
+        return True
+    else:
+        return None
+
 
 if __name__ == '__main__':
     app.run()

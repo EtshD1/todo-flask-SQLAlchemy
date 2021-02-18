@@ -19,6 +19,24 @@
         }
       });
   };
+  // Update function
+  const updateTask = (id, change, target) => {
+    fetch('/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `id=${id}&data=${change}`
+    })
+      .then(res => {
+        return res.json();
+      }).then(result => {
+        if (result.status !== true) {
+          alert("Sorry, an error occurred :(");
+          target.checked = !change;
+        }
+      });
+  }
   // For creating HTML task
   const createTask = (data, id) => {
     const li = document.createElement("li");
@@ -28,7 +46,15 @@
     // Add description field and class
     const description = document.createElement("div");
     description.classList.add("description");
-    description.textContent = data;
+    const input = document.createElement("input");
+    input.classList.add("completed");
+    input.setAttribute("type", "checkbox");
+    input.setAttribute("name", "completed");
+    input.addEventListener("change", e => updateTask(id, e.target.checked, e.target));
+    const p = document.createElement("p");
+    p.textContent = data;
+    description.appendChild(input);
+    description.appendChild(p);
     // Add remove button
     const remove = document.createElement("div");
     remove.classList.add("remove");
@@ -71,11 +97,19 @@
       });
   });
 
-  // Delete buttons
-  document.querySelectorAll(".remove").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.dataset.id;
-      removeTask(id, btn.parentNode.parentNode);
+  // Delete/Update tasks
+  document.querySelectorAll(".task").forEach(task => {
+    const id = task.dataset.id;
+    // Delete
+    const deleteBtn = task.querySelector(".remove");
+    deleteBtn.addEventListener("click", () => {
+      removeTask(id, deleteBtn.parentNode.parentNode);
+    });
+    // Update
+    const completedCheckbox = task.querySelector(".completed");
+    completedCheckbox.addEventListener("change", e => {
+      const change = e.target.checked;
+      updateTask(id, change, e.target);
     });
   });
 })();

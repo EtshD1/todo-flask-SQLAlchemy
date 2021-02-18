@@ -22,7 +22,7 @@ def upgrade():
     # ### end Alembic commands ###
     op.execute('UPDATE tasks SET completed = False WHERE completed is NULL')
 
-    op.alter_column('todos', 'completed', nullable=False)
+    op.alter_column('tasks', 'completed', nullable=False)
 
 
 def downgrade():
