@@ -23,13 +23,13 @@ class Task(db.Model):
     completed = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
-        return f'ID:{self.id}, Description: {self.description}'
+        return f'ID:{self.id}, Description: {self.description}, Completed: {self.completed}'
 
 
 # Read Task
 @app.route("/")
 def index():
-    return render_template("index.html", data=Task.query.all())
+    return render_template("index.html", data=Task.query.order_by('id').all())
 
 
 # Create Task
