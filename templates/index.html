@@ -11,6 +11,23 @@
 
 <body>
   <div class="container">
+    <ul class="todoLists">
+      <li>
+        <h3>Lists:</h3>
+      </li>
+      <li>
+        <form action="/list" method="post">
+          <input type="text" name="name"><input type="submit" value="Add">
+        </form>
+      </li>
+      {% for l in lists %}
+      <li class="todoList" data-id="{{ l.id }}">
+        <a href="/list/{{ l.id }}">{{ l.name }}</a>
+        <span class="delete-list">&#10060</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% if lists|length > 0 %}
     <ul class="taskList">
       <li>
         <h2>To Do</h2>
@@ -21,7 +38,7 @@
           <input type="submit" value="+" class="submit">
         </form>
       </li>
-      {% for d in data %}
+      {% for d in tasks %}
       <li>
         <div class="task" data-id="{{d.id}}">
           <div class="description">
@@ -39,6 +56,7 @@
       </li>
       {% endfor %}
     </ul>
+    {% endif %}
   </div>
   <script src="/public/app.js"></script>
 </body>

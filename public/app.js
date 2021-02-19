@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  // Remove function
+  // Remove task function
   const removeTask = (id, li) => {
     fetch('/delete', {
       method: 'DELETE',
@@ -19,7 +19,7 @@
         }
       });
   };
-  // Update function
+  // Update task function
   const updateTask = (id, change, target) => {
     fetch('/update', {
       method: 'PUT',
@@ -71,31 +71,39 @@
     document.querySelector(".taskList").appendChild(li);
   }
   // Add task form
-  const form = document.querySelector("form");
+  const taskForm = document.querySelector(".taskList form");
 
   // On submit post to "/add"
-  form.addEventListener("submit", (e) => {
-    // Disable refresh
-    e.preventDefault();
-    const desc = form["description"].value;
+  try {
+    taskForm.addEventListener("submit", (e) => {
+      // Disable refresh
+      e.preventDefault();
+      const desc = taskForm["description"].value;
 
-    fetch('/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: `description=${desc}`
-    })
-      .then(res => {
-        return res.json();
-      }).then(result => {
-        if (result.status === true) {
-          createTask(result.description, result.id);
-        } else {
-          alert("Sorry, an error occurred :(");
-        }
-      });
-  });
+      fetch(window.location.pathname, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `description=${desc}`
+      })
+        .then(res => {
+          return res.json();
+        }).then(result => {
+          if (result.status === true) {
+            createTask(result.description, result.id);
+          } else {
+            alert("Sorry, an error occurred :(");
+          }
+        });
+    });
+  } catch (error) {
+    if (taskForm === null) {
+      console.log("No lists");
+    } else {
+      console.log(error);
+    }
+  }
 
   // Delete/Update tasks
   document.querySelectorAll(".task").forEach(task => {
@@ -111,5 +119,28 @@
       const change = e.target.checked;
       updateTask(id, change, e.target);
     });
+  });
+  // Delete lists
+  document.querySelectorAll(".todoList").forEach(list => {
+    const id = list.dataset.id;
+    list.querySelector(".delete-list").addEventListener("click", () => {
+      fetch("/delete-list", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `id=${id}`
+      })
+        .then(res => res.json())
+        .then(
+          res => {
+            if (res.status) {
+              window.location.replace("/");
+            } else {
+              alert("Something went wrong :(");
+            }
+          }
+        );
+    })
   });
 })();

@@ -7,7 +7,6 @@
 
 body {
   justify-content: center;
-  align-items: center;
   display: flex;
   min-height: 100vh;
   background: linear-gradient(135deg,#8DA9C4, #EEF4ED);
@@ -34,6 +33,22 @@ body {
   cursor: pointer;
 }
 
+.todoLists {
+  padding: 15px;
+  list-style: none;
+}
+
+.todoLists > li {
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;  
+}
+
+.delete-list {
+  cursor: pointer;
+  user-select: none;
+}
+
 .remove svg {
   fill: #ffffffcc;
   max-height: 100%;
@@ -53,7 +68,7 @@ body {
 }
 
 .taskList {
-  flex: 0 0 500px;
+  width: 500px;
   border: 2px solid rgb(18, 36, 37);
   list-style: none;
   border-radius: 15px;
@@ -70,6 +85,7 @@ body {
 .container {
   display: flex;
   justify-content: center;
+  padding: 25px;
 }
 
 
